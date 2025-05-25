@@ -16,6 +16,25 @@ public class Mapa {
         this.punktyDostawy = punktyDostawy;
     }
 
+    public void wyswietlMape() {
+        char[][] mapa = new char[dlugosc][szerokosc];
+
+        // Wypelnienie mapy "."
+        for (int y = 0; y < dlugosc; y++) {
+            for (int x = 0; x < szerokosc; x++) {
+                mapa[y][x] = '.';
+            }
+        }
+
+        // Wyswietlanie mapy
+        for (int y = 0; y < dlugosc; y++) {
+            for (int x = 0; x < szerokosc; x++) {
+                System.out.print(mapa[y][x] + " ");
+            }
+            System.out.println();
+        }
+    }
+
     // Gettery
 
     public int getSzerokosc() {
