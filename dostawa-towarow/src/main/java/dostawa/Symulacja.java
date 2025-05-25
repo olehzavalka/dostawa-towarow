@@ -14,6 +14,19 @@ public class Symulacja {
         this.zdarzenia = new ArrayList<>();
     }
 
+    public Symulacja(int szerokosc, int dlugosc, int liczbaMagazynow, int liczbaPunktowDostawy) {
+        mapa = new Mapa(szerokosc, dlugosc, new ArrayList<>(), new ArrayList<>());
+    }
+
+    public void wyswietlMape() {
+        mapa.wyswietlMape();
+    }
+
+    @Override
+    public String toString() {
+        return mapa.toString();
+    }
+
     // Gettery
 
     public Mapa getMapa() {

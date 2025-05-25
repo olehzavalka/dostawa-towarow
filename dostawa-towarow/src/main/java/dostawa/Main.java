@@ -16,5 +16,9 @@ public class Main {
 
         System.out.print("Podaj liczbe punktow dostawy: ");
         int liczbaPunktowDostawy = scanner.nextInt();
+
+        Symulacja symulacja = new Symulacja(szerokosc, dlugosc, liczbaMagazynow, liczbaPunktowDostawy);
+        symulacja.wyswietlMape();
+        System.out.println(symulacja);
     }
 }

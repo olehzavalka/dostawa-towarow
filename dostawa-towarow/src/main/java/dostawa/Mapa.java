@@ -35,6 +35,11 @@ public class Mapa {
         }
     }
 
+    @Override
+    public String toString() {
+        return "Mapa o wymiarach: " + szerokosc + " x " + dlugosc;
+    }
+
     // Gettery
 
     public int getSzerokosc() {
