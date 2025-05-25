@@ -16,6 +16,7 @@ public class Symulacja {
 
     public Symulacja(int szerokosc, int dlugosc, int liczbaMagazynow, int liczbaPunktowDostawy) {
         mapa = new Mapa(szerokosc, dlugosc, new ArrayList<>(), new ArrayList<>());
+        mapa.rozmiescObiekty(liczbaMagazynow, liczbaPunktowDostawy);
     }
 
     public void wyswietlMape() {
