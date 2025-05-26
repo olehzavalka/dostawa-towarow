@@ -11,7 +11,7 @@ public class SymulacjaTest {
     @Test
     public void testTworzenieSymulacji() {
         Mapa mapa = new Mapa(20, 15, new ArrayList<>(), new ArrayList<>());
-        Pojazd pojazd = new Pojazd(1, 17, new Pozycja(7, 5));
+        Pojazd pojazd = new PojazdMaly(1, new Pozycja(7, 5));
         List<Pojazd> pojazdy = new ArrayList<>();
         pojazdy.add(pojazd);
 

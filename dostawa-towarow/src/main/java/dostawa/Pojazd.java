@@ -1,6 +1,6 @@
 package dostawa;
 
-public class Pojazd {
+public abstract class Pojazd {
     private int id;
     private int ladownoscMax;
     private int aktualnaIloscTowaru;
@@ -31,9 +31,11 @@ public class Pojazd {
         return pozycja;
     }
 
-    // Metody sprawdzajace
+    // Metoda sprawdzajaca
 
     public boolean czyMoznaZaladowac(int ilosc) {
         return (aktualnaIloscTowaru + ilosc) <= ladownoscMax;
     }
+
+    public abstract String getTyp();
 }
