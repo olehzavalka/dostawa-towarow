@@ -18,7 +18,7 @@ public class Symulacja {
                      int liczbaMalych, int liczbaSrednich, int liczbaDuzych) {
         this.pojazdy = new ArrayList<>();
         this.mapa = new Mapa(szerokosc, dlugosc, new ArrayList<>(), new ArrayList<>());
-        // Rozmiesc wszystkie obiekty na mapie
+        // Rozmieść wszystkie obiekty na mapie
         mapa.rozmiescObiekty(liczbaMagazynow, liczbaPunktowDostawy, liczbaMalych, liczbaSrednich, liczbaDuzych, pojazdy);
         this.zdarzenia = new ArrayList<>();
     }
