@@ -20,5 +20,8 @@ public class Main {
         Symulacja symulacja = new Symulacja(szerokosc, dlugosc, liczbaMagazynow, liczbaPunktowDostawy);
         symulacja.wyswietlMape();
         System.out.println(symulacja);
+
+        // Wyswietlanie informacji o punktach dostawy
+        symulacja.getMapa().wyswietlPunktyDostawy();
     }
 }

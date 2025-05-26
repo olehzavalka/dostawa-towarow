@@ -91,6 +91,16 @@ public class Mapa {
         }
     }
 
+    public void wyswietlPunktyDostawy() {
+        System.out.println("\nWszystkie punkty dostawy:");
+        for (PunktDostawy punkt : punktyDostawy) {
+            System.out.println("ID: " + punkt.getId() +
+                    "; Pozycja: (kolumna: " + punkt.getPozycja().getX() +
+                    "; wiersz: " + punkt.getPozycja().getY() + ")" +
+                    "; Pojemnosc maksymalna: " + punkt.getPojemnoscMax());
+        }
+    }
+
 
     @Override
     public String toString() {
