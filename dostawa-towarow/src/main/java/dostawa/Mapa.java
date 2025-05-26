@@ -158,6 +158,12 @@ public class Mapa {
                 "\nLiczba wszystkich pojazdow: " + pojazdy.size();
     }
 
+
+    // Do zrobienia
+    public void znajdzNajkrotszaTrase(Pozycja start, Pozycja cel) {
+        // TODO: Zaimplementuj BFS/Dijkstra, zwróć listę pozycji na trasie
+    }
+
     // Gettery
 
     public int getSzerokosc() {

@@ -46,6 +46,25 @@ public class Symulacja {
         return zdarzenia;
     }
 
+    // Do zrobienia
+    public List<Zamowienie> generujZamowienia() {
+        // TODO: Zaimplementowac tworzenie zamowienia dla losowych punktow dostawy
+        return new ArrayList<>();
+    }
+
+    public Magazyn znajdzNajblizszyMagazyn(Pozycja punktDostawy, int iloscTowaru) {
+        // TODO: Zaimplementowac znajdowanie najblizszego magazynu do punktu dostawy z odpowiednia iloscia towaru
+        return null;
+    }
+
+    public void zapiszStatystyki() {
+        // TODO: Zaimplementowac zapisywanie danych statystycznych do pliku csv
+    }
+
+    public void generujZdarzeniaLosowe() {
+        // TODO: Zaimplementowac powstawanie losowych zdarzen drogowych
+    }
+
     // Metoda do uruchomienia symulacji
     public void uruchomSymulacje() {
     }
