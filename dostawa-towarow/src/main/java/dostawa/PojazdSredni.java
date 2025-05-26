@@ -13,6 +13,11 @@ public class PojazdSredni extends Pojazd {
         return "Sredni";
     }
 
+    @Override
+    public char getSymbol() {
+        return 's';
+    }
+
     public int getZuzyciePaliwa() {
         return ZUZYCIE_PALIWA;
     }

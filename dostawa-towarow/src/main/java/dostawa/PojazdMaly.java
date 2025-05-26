@@ -13,6 +13,11 @@ public class PojazdMaly extends Pojazd {
         return "Maly";
     }
 
+    @Override
+    public char getSymbol() {
+        return 'm';
+    }
+
     public int getZuzyciePaliwa() {
         return ZUZYCIE_PALIWA;
     }

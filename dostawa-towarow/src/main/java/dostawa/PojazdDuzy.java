@@ -13,6 +13,11 @@ public class PojazdDuzy extends Pojazd {
         return "Duzy";
     }
 
+    @Override
+    public char getSymbol() {
+        return 'd';
+    }
+
     public int getZuzyciePaliwa() {
         return ZUZYCIE_PALIWA;
     }
