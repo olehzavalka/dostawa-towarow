@@ -14,18 +14,22 @@ public class Symulacja {
         this.zdarzenia = new ArrayList<>();
     }
 
-    public Symulacja(int szerokosc, int dlugosc, int liczbaMagazynow, int liczbaPunktowDostawy) {
-        mapa = new Mapa(szerokosc, dlugosc, new ArrayList<>(), new ArrayList<>());
-        mapa.rozmiescObiekty(liczbaMagazynow, liczbaPunktowDostawy);
+    public Symulacja(int szerokosc, int dlugosc, int liczbaMagazynow, int liczbaPunktowDostawy,
+                     int liczbaMalych, int liczbaSrednich, int liczbaDuzych) {
+        this.pojazdy = new ArrayList<>();
+        this.mapa = new Mapa(szerokosc, dlugosc, new ArrayList<>(), new ArrayList<>());
+        // Rozmieść wszystkie obiekty na mapie
+        mapa.rozmiescObiekty(liczbaMagazynow, liczbaPunktowDostawy, liczbaMalych, liczbaSrednich, liczbaDuzych, pojazdy);
+        this.zdarzenia = new ArrayList<>();
     }
 
     public void wyswietlMape() {
-        mapa.wyswietlMape();
+        mapa.wyswietlMape(pojazdy);
     }
 
     @Override
     public String toString() {
-        return mapa.toString();
+        return mapa.toString(pojazdy);
     }
 
     // Gettery

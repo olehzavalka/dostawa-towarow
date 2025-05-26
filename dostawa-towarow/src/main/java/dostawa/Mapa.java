@@ -11,7 +11,6 @@ public class Mapa {
     private List<Magazyn> magazyny;
     private List<PunktDostawy> punktyDostawy;
 
-
     public Mapa(int szerokosc, int dlugosc, List<Magazyn> magazyny, List<PunktDostawy> punktyDostawy) {
         this.szerokosc = szerokosc;
         this.dlugosc = dlugosc;
@@ -19,7 +18,8 @@ public class Mapa {
         this.punktyDostawy = punktyDostawy;
     }
 
-    public void wyswietlMape() {
+
+    public void wyswietlMape(List<Pojazd> pojazdy) {
         char[][] mapa = new char[dlugosc][szerokosc];
 
         // Wypelnienie mapy "."
@@ -43,20 +43,33 @@ public class Mapa {
             mapa[y][x] = 'P';
         }
 
+        // Ustawienie symboly 'm' - pojazd maly, 's' - pojazd sredni, 'd' - pojazd duzy
+        for (Pojazd pojazd : pojazdy) {
+            int x = pojazd.getPozycja().getX();
+            int y = pojazd.getPozycja().getY();
+            mapa[y][x] = pojazd.getSymbol();
+        }
+
         // Wyswietlanie mapy
-        System.out.println("Mapa:");
+        System.out.println("\nMapa:");
         for (int y = 0; y < dlugosc; y++) {
             for (int x = 0; x < szerokosc; x++) {
                 System.out.print(mapa[y][x] + " ");
             }
             System.out.println();
         }
+        System.out.println("Legenda:" +
+                "\nM - magazyn, P - punkt dostawy, " +
+                "\nm - maly pojazd, s - sredni pojazd, d - duzy pojazd\n");
     }
 
 
-    public void rozmiescObiekty(int liczbaMagazynow, int liczbaPunktowDostawy) {
-        if (liczbaMagazynow + liczbaPunktowDostawy > szerokosc * dlugosc) {
-            System.out.println("Blad: Zbyt duzo magazynow i punktow dostawy w stosunku do liczby miejsc na planszy!");
+    public void rozmiescObiekty(int liczbaMagazynow, int liczbaPunktowDostawy,
+                                int liczbaMalych, int liczbaSrednich, int liczbaDuzych,
+                                List<Pojazd> pojazdy) {
+        int liczbaObiektow = liczbaMagazynow + liczbaPunktowDostawy + liczbaMalych + liczbaSrednich + liczbaDuzych;
+        if (liczbaObiektow > szerokosc * dlugosc) {
+            System.out.println("Blad: Zbyt duzo obiektow na mapie!");
             return;
         }
 
@@ -84,10 +97,46 @@ public class Mapa {
                 pozycja = new Pozycja(x, y);
             } while (zajetePozycje.contains(pozycja));
             zajetePozycje.add(pozycja);
-
-            // Losowe wybieranie pojemnosci dla punktu dostawy z zakresu od 10 do 100
             int pojemnosc = random.nextInt(91) + 10;
             punktyDostawy.add(new PunktDostawy(i, pozycja, pojemnosc));
+        }
+
+        int idPojazdu = 1;
+
+        // Rozmieszczanie malych pojazdow
+        for (int i = 1; i <= liczbaMalych; i++) {
+            Pozycja pozycja;
+            do {
+                int x = random.nextInt(szerokosc);
+                int y = random.nextInt(dlugosc);
+                pozycja = new Pozycja(x, y);
+            } while (zajetePozycje.contains(pozycja));
+            zajetePozycje.add(pozycja);
+            pojazdy.add(new PojazdMaly(idPojazdu++, pozycja));
+        }
+
+        // Rozmieszczanie srednich pojazdow
+        for (int i = 1; i <= liczbaSrednich; i++) {
+            Pozycja pozycja;
+            do {
+                int x = random.nextInt(szerokosc);
+                int y = random.nextInt(dlugosc);
+                pozycja = new Pozycja(x, y);
+            } while (zajetePozycje.contains(pozycja));
+            zajetePozycje.add(pozycja);
+            pojazdy.add(new PojazdSredni(idPojazdu++, pozycja));
+        }
+
+        // Rozmieszczanie duzych pojazdow
+        for (int i = 1; i <= liczbaDuzych; i++) {
+            Pozycja pozycja;
+            do {
+                int x = random.nextInt(szerokosc);
+                int y = random.nextInt(dlugosc);
+                pozycja = new Pozycja(x, y);
+            } while (zajetePozycje.contains(pozycja));
+            zajetePozycje.add(pozycja);
+            pojazdy.add(new PojazdDuzy(idPojazdu++, pozycja));
         }
     }
 
@@ -102,11 +151,11 @@ public class Mapa {
     }
 
 
-    @Override
-    public String toString() {
+    public String toString(List<Pojazd> pojazdy) {
         return "Mapa o wymiarach: " + szerokosc + " x " + dlugosc +
                 "\nLiczba magazynow: " + magazyny.size() +
-                "\nLiczba punktow dostawy: " + punktyDostawy.size();
+                "\nLiczba punktow dostawy: " + punktyDostawy.size() +
+                "\nLiczba wszystkich pojazdow: " + pojazdy.size();
     }
 
     // Gettery

@@ -38,4 +38,6 @@ public abstract class Pojazd {
     }
 
     public abstract String getTyp();
+
+    public abstract char getSymbol();
 }

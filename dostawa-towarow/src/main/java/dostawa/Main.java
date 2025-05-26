@@ -17,11 +17,21 @@ public class Main {
         System.out.print("Podaj liczbe punktow dostawy: ");
         int liczbaPunktowDostawy = scanner.nextInt();
 
-        Symulacja symulacja = new Symulacja(szerokosc, dlugosc, liczbaMagazynow, liczbaPunktowDostawy);
+        System.out.print("Podaj liczbe malych pojazdow: ");
+        int liczbaMalych = scanner.nextInt();
+
+        System.out.print("Podaj liczbe srednich pojazdow: ");
+        int liczbaSrednich = scanner.nextInt();
+
+        System.out.print("Podaj liczbe duzych pojazdow: ");
+        int liczbaDuzych = scanner.nextInt();
+
+        Symulacja symulacja = new Symulacja(szerokosc, dlugosc, liczbaMagazynow, liczbaPunktowDostawy, liczbaMalych, liczbaSrednich, liczbaDuzych);
+
         symulacja.wyswietlMape();
         System.out.println(symulacja);
 
         // Wyswietlanie informacji o punktach dostawy
-        symulacja.getMapa().wyswietlPunktyDostawy();
+        // symulacja.getMapa().wyswietlPunktyDostawy();
     }
 }
