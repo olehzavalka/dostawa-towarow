@@ -16,4 +16,6 @@ public class Zamowienie {
     public int getIlosc() {
         return ilosc;
     }
+
+    // Przechowanie informacji o pojezdzie dla zamowienia w tej klasie
 }
