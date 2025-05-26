@@ -161,7 +161,7 @@ public class Mapa {
 
     // Do zrobienia
     public void znajdzNajkrotszaTrase(Pozycja start, Pozycja cel) {
-        // TODO: Zaimplementuj BFS/Dijkstra, zwróć listę pozycji na trasie
+        // TODO: Zaimplementuj przeszukiwaniem wszerz znajdowanie najkrotszej drogi
     }
 
     // Gettery
