@@ -1,5 +1,7 @@
 package dostawa;
 
+import java.util.Random;
+
 public class PunktDostawy {
     private int id;
     private Pozycja pozycja;
@@ -12,6 +14,23 @@ public class PunktDostawy {
         this.pozycja = pozycja;
         this.pojemnoscMax = pojemnoscMax;
         this.aktualnaIloscTowaru = 0;
+    }
+
+    // Metoda do zlozenia zamowienia przez punkt dostawy do magazynu
+    public Zamowienie zlozZamowienie() {
+        Random random = new Random();
+        int maxMozliwaIlosc = pojemnoscMax - aktualnaIloscTowaru;
+
+        if (maxMozliwaIlosc < 1) {
+            // Nie mozna zamowic nawet 1 jednostki towaru, nie generujemy zamowienia
+            return null;
+        }
+
+        // Losuj ilosc z przedzialu [1, min(25, maxMozliwaIlosc)]
+        int gornaGranica = Math.min(25, maxMozliwaIlosc);
+        int ilosc = random.nextInt(gornaGranica) + 1; // [1, gornaGranica]
+
+        return new Zamowienie(this, ilosc);
     }
 
     // Gettery
