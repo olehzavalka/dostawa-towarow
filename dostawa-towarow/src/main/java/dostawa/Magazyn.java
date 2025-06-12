@@ -13,8 +13,18 @@ public class Magazyn {
 
     // Do zrobienia
     public Pojazd znajdzNajlepszyPojazd(List<Pojazd> pojazdy, int iloscTowaru, Pozycja punktDostawy) {
-        // TODO: Zaimplementowac znajdowanie najlepszego pojazd do przewiezienia danej ilosci do wskazanego punktu
-        return null;
+        Pojazd najlepszy = null;
+        int minZuzycie = Integer.MAX_VALUE;
+        for (Pojazd p : pojazdy) {
+            if (p.czyMoznaZaladowac(iloscTowaru)) {
+                int zuzyciePaliwa = p.getZuzyciePaliwa(); // Wywołuje się właściwa wersja metody!
+                if (zuzyciePaliwa < minZuzycie) {
+                    minZuzycie = zuzyciePaliwa;
+                    najlepszy = p;
+                }
+            }
+        }
+        return najlepszy;
     }
 
     public void ladujPojazdIMarsz(Pojazd pojazd, Magazyn magazyn, Zamowienie zamowienie) {
