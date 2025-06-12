@@ -1,5 +1,6 @@
 package dostawa;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -30,8 +31,15 @@ public class Main {
 
         symulacja.wyswietlMape();
         System.out.println(symulacja);
+        System.out.println("\n");
 
         // Wyswietlanie informacji o punktach dostawy
         // symulacja.getMapa().wyswietlPunktyDostawy();
+
+        List<Zamowienie> zamowienia = symulacja.generujZamowienia();
+        for (Zamowienie zam : zamowienia) {
+            System.out.println("Punkt dostawy ID " + zam.getPunktDostawy().getId() +
+                    " zamawia " + zam.getIlosc() + " jednostek towaru");
+        }
     }
 }

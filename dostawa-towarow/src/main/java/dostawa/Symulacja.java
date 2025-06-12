@@ -46,10 +46,15 @@ public class Symulacja {
         return zdarzenia;
     }
 
-    // Do zrobienia
     public List<Zamowienie> generujZamowienia() {
-        // TODO: Zaimplementowac tworzenie zamowienia dla losowych punktow dostawy
-        return new ArrayList<>();
+        List<Zamowienie> zamowienia = new ArrayList<>();
+        for (PunktDostawy punkt : mapa.getPunktyDostawy()) {
+            Zamowienie zam = punkt.zlozZamowienie();
+            if (zam != null) {
+                zamowienia.add(zam);
+            }
+        }
+        return zamowienia;
     }
 
     public Magazyn znajdzNajblizszyMagazyn(Pozycja punktDostawy, int iloscTowaru) {
