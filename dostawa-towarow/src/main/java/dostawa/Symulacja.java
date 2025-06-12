@@ -53,8 +53,20 @@ public class Symulacja {
     }
 
     public Magazyn znajdzNajblizszyMagazyn(Pozycja punktDostawy, int iloscTowaru) {
-        // TODO: Zaimplementowac znajdowanie najblizszego magazynu do punktu dostawy z odpowiednia iloscia towaru
-        return null;
+        Magazyn najblizszy = null;
+        int minDystans = Integer.MAX_VALUE;
+
+        for (Magazyn magazyn : mapa.getMagazyny()) {
+            int odlegloscPozioma = Math.abs(magazyn.getPozycja().getX() - punktDostawy.getX());
+            int odlegloscPionowa = Math.abs(magazyn.getPozycja().getY() - punktDostawy.getY());
+
+            int dystans = odlegloscPozioma + odlegloscPionowa;
+            if (dystans < minDystans) {
+                minDystans = dystans;
+                najblizszy = magazyn;
+            }
+        }
+        return najblizszy;
     }
 
     public void zapiszStatystyki() {
