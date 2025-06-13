@@ -33,6 +33,10 @@ public class PunktDostawy {
         return new Zamowienie(this, ilosc);
     }
 
+    public void dodajTowar(int ilosc) {
+        this.aktualnaIloscTowaru += ilosc;
+    }
+
     // Gettery
 
     public int getId() {

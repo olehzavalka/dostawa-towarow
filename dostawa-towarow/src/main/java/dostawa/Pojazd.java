@@ -13,6 +13,16 @@ public abstract class Pojazd {
         this.aktualnaIloscTowaru = 0;
     }
 
+    // Settery
+
+    public void setPozycja(Pozycja pozycja) {
+        this.pozycja = pozycja;
+    }
+
+    public void setAktualnaIloscTowaru(int ilosc) {
+        this.aktualnaIloscTowaru = ilosc;
+    }
+
     // Gettery
 
     public int getId() {

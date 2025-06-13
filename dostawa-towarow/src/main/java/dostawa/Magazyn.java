@@ -28,7 +28,18 @@ public class Magazyn {
     }
 
     public void ladujPojazdIMarsz(Pojazd pojazd, Magazyn magazyn, Zamowienie zamowienie) {
-        // TODO: Zaimplementowac zaladowanie towarow do pojazdu
+        // Zaladowanie towaru do pojazdu
+        int ilosc = zamowienie.getIlosc();
+
+        // Ustawienie nowej ilosci towaru w pojezdzie
+        pojazd.setAktualnaIloscTowaru(ilosc);
+
+        // Przeniesinie pojazdu na pozycje punktu dostawy
+        Pozycja cel = zamowienie.getPunktDostawy().getPozycja();
+        pojazd.setPozycja(cel);
+
+        // Dodanie towaru do punktu dostawy
+        zamowienie.getPunktDostawy().dodajTowar(ilosc);
     }
 
     public int getId() {
