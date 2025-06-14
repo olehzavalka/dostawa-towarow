@@ -72,6 +72,32 @@ public class Mapa {
     }
 
 
+    private Pozycja losujPoprawnaPozycje(int szerokosc, int dlugosc, Set<Pozycja> zajetePozycje) {
+        Random random = new Random();
+        Pozycja kandydat;
+        boolean poprawna;
+
+        do {
+            int x = random.nextInt(szerokosc);
+            int y = random.nextInt(dlugosc);
+            kandydat = new Pozycja(x, y);
+            poprawna = true;
+            // Sprawdzanie czy kandydat nie sasiaduje dookola z zadna juz zajeta pozycja
+            for (Pozycja poz : zajetePozycje) {
+                int dx = Math.abs(kandydat.getX() - poz.getX());
+                int dy = Math.abs(kandydat.getY() - poz.getY());
+                if (dx <= 1 && dy <= 1) {
+                    poprawna = false;
+                    break;
+                }
+            }
+        } while (!poprawna);
+
+        return kandydat;
+    }
+
+
+
     public void rozmiescObiekty(int liczbaMagazynow, int liczbaPunktowDostawy,
                                 int liczbaMalych, int liczbaSrednich, int liczbaDuzych,
                                 List<Pojazd> pojazdy) {
@@ -86,24 +112,14 @@ public class Mapa {
 
         // Rozmieszczanie magazynow
         for (int i = 1; i <= liczbaMagazynow; i++) {
-            Pozycja pozycja;
-            do {
-                int x = random.nextInt(szerokosc);
-                int y = random.nextInt(dlugosc);
-                pozycja = new Pozycja(x, y);
-            } while (zajetePozycje.contains(pozycja));
+            Pozycja pozycja = losujPoprawnaPozycje(szerokosc, dlugosc, zajetePozycje);
             zajetePozycje.add(pozycja);
             magazyny.add(new Magazyn(i, pozycja));
         }
 
         // Rozmieszczanie punktow dostawy
         for (int i = 1; i <= liczbaPunktowDostawy; i++) {
-            Pozycja pozycja;
-            do {
-                int x = random.nextInt(szerokosc);
-                int y = random.nextInt(dlugosc);
-                pozycja = new Pozycja(x, y);
-            } while (zajetePozycje.contains(pozycja));
+            Pozycja pozycja = losujPoprawnaPozycje(szerokosc, dlugosc, zajetePozycje);
             zajetePozycje.add(pozycja);
             int pojemnosc = random.nextInt(91) + 10;
             punktyDostawy.add(new PunktDostawy(i, pozycja, pojemnosc));
