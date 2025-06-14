@@ -49,9 +49,15 @@ public class Symulacja {
     public List<Zamowienie> generujZamowienia() {
         List<Zamowienie> zamowienia = new ArrayList<>();
         for (PunktDostawy punkt : mapa.getPunktyDostawy()) {
+            if (punkt.getCzyMaAktywneZamowienie()) {
+                continue; // ten punkt czeka na dostawe – nie generuje nowego zamowienia
+            }
+            // Generujemy kolejne zamowienie
+            // tylko jesli punkt nie jest pelny i nie ma aktywnego zamowienia
             Zamowienie zam = punkt.zlozZamowienie();
             if (zam != null) {
                 zamowienia.add(zam);
+                punkt.setCzyMaAktywneZamowienie(true); // zaznaczenie, ze punkt oczekuje na realizacje zamowienia
             }
         }
         return zamowienia;

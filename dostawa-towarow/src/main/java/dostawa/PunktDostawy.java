@@ -37,6 +37,9 @@ public class PunktDostawy {
         this.aktualnaIloscTowaru += ilosc;
     }
 
+
+    private boolean czyMaAktywneZamowienie = false;
+
     // Gettery
 
     public int getId() {
@@ -53,6 +56,16 @@ public class PunktDostawy {
 
     public int getAktualnaIloscTowaru() {
         return aktualnaIloscTowaru;
+    }
+
+    public boolean getCzyMaAktywneZamowienie() {
+        return czyMaAktywneZamowienie;
+    }
+
+    // Settery
+
+    public void setCzyMaAktywneZamowienie(boolean wartosc) {
+        this.czyMaAktywneZamowienie = wartosc;
     }
 
     // Metody sprawdzajace
