@@ -51,10 +51,18 @@ public class Mapa {
         }
 
         // Wyswietlanie mapy
-        System.out.println("\nMapa:");
+        // Dodanie numeracji kolumn na gorze
+        System.out.print("\n    ");
+        for (int x = 0; x < szerokosc; x++) {
+            System.out.printf("%2d ", x);
+        }
+        System.out.println();
+
+        // Dodanie numeracji wierszy z boku
         for (int y = 0; y < dlugosc; y++) {
+            System.out.printf("%2d |", y);
             for (int x = 0; x < szerokosc; x++) {
-                System.out.print(mapa[y][x] + " ");
+                System.out.print(" " + mapa[y][x] + " ");
             }
             System.out.println();
         }
