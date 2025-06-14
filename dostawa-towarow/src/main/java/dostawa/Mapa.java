@@ -1,9 +1,6 @@
 package dostawa;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 public class Mapa {
     private int szerokosc;
@@ -183,9 +180,38 @@ public class Mapa {
     }
 
 
-    // Do zrobienia
-    public void znajdzNajkrotszaTrase(Pozycja start, Pozycja cel) {
-        // TODO: Zaimplementuj przeszukiwaniem wszerz znajdowanie najkrotszej drogi
+
+
+    public List<Pozycja> znajdzNajkrotszaTrase(Pozycja start, Pozycja cel, List<Pozycja> zakazane) {
+        Queue<List<Pozycja>> kolejka = new LinkedList<>();
+        Set<Pozycja> odwiedzone = new HashSet<>();
+        List<Pozycja> sciezkaStartowa = new ArrayList<>();
+        sciezkaStartowa.add(start);
+        kolejka.add(sciezkaStartowa);
+        odwiedzone.add(start);
+
+        int[][] kierunki = {{1,0},{-1,0},{0,1},{0,-1}};
+        while (!kolejka.isEmpty()) {
+            List<Pozycja> sciezkaDoAnalizy = kolejka.poll();
+            Pozycja ostatnia = sciezkaDoAnalizy.get(sciezkaDoAnalizy.size()-1);
+            if (ostatnia.equals(cel)) {
+                return sciezkaDoAnalizy.subList(1, sciezkaDoAnalizy.size());
+            }
+            for (int[] k : kierunki) {
+                int nowyX = ostatnia.getX() + k[0];
+                int nowyY = ostatnia.getY() + k[1];
+                Pozycja nowa = new Pozycja(nowyX, nowyY);
+                if (nowyX >= 0 && nowyX < szerokosc && nowyY >= 0 && nowyY < dlugosc
+                        && !odwiedzone.contains(nowa)
+                        && (zakazane == null || !zakazane.contains(nowa))) {
+                    List<Pozycja> nowaSciezka = new ArrayList<>(sciezkaDoAnalizy);
+                    nowaSciezka.add(nowa);
+                    kolejka.add(nowaSciezka);
+                    odwiedzone.add(nowa);
+                }
+            }
+        }
+        return new ArrayList<>(); // Brak trasy
     }
 
     // Gettery
