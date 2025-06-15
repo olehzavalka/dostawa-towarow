@@ -27,6 +27,12 @@ public abstract class Pojazd {
     private int iloscDoDostarczenia;
     private List<Pozycja> trasaDoCelu;
 
+    public void przesunNaKolejnyKrokTrasy() {
+        if (trasaDoCelu != null && !trasaDoCelu.isEmpty()) {
+            setPozycja(trasaDoCelu.remove(0));
+        }
+    }
+
     // Settery
 
     public void setPozycja(Pozycja pozycja) {
