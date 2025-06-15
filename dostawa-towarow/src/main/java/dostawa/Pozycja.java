@@ -11,6 +11,14 @@ public class Pozycja {
         this.y = y;
     }
 
+    public static boolean czySasiednie(Pozycja a, Pozycja b) {
+        int deltaX = Math.abs(a.getX() - b.getX());
+        int deltaY = Math.abs(a.getY() - b.getY());
+        return (deltaX + deltaY == 1);
+    }
+
+    //Gettery
+
     public int getX() {
         return x;
     }
