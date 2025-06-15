@@ -79,6 +79,11 @@ public class Symulacja {
         return najblizszy;
     }
 
+
+    // Przechowywanie zamowien bedacych w realizacji
+    private List<Zamowienie> zamowieniaWRealizacji = new ArrayList<>();
+
+
     // Tworzenie id zamowien na podstawie informacji o punkcie dostawy i ilosci towaru
     private Set<String> przygotujNoweIdZamowien(List<Zamowienie> zamowienia) {
         Set<String> idZamowien = new HashSet<>();
@@ -89,8 +94,28 @@ public class Symulacja {
     }
 
 
-    // Przechowywanie zamowien bedacych w realizacji
-    private List<Zamowienie> zamowieniaWRealizacji = new ArrayList<>();
+
+    private void wypiszZamowienia(List<Zamowienie> zamowienia, Set<String> noweIdZamowien) {
+        // Zamowienia w realizacji z poprzednich epok
+        for (Zamowienie zam : zamowieniaWRealizacji) {
+            String idZamowienia = zam.getPunktDostawy().getId() + "_" + zam.getIlosc();
+            if (!noweIdZamowien.contains(idZamowienia)) {
+                System.out.println("Punkt dostawy ID " + zam.getPunktDostawy().getId() +
+                        " (" + zam.getPunktDostawy().getPozycja().getX() + ", " +
+                        zam.getPunktDostawy().getPozycja().getY() + ") zamawia " +
+                        zam.getIlosc() + " jednostek towaru (w realizacji)");
+            }
+        }
+        // Nowe zamowienia
+        for (Zamowienie zam : zamowienia) {
+            System.out.println("Punkt dostawy ID " + zam.getPunktDostawy().getId() +
+                    " (" + zam.getPunktDostawy().getPozycja().getX() + ", " +
+                    zam.getPunktDostawy().getPozycja().getY() + ") zamawia " +
+                    zam.getIlosc() + " jednostek towaru (nowe zamowienie)");
+        }
+    }
+
+
 
     public void zapiszStatystyki() {
         // TODO: Zaimplementowac zapisywanie danych statystycznych do pliku csv
