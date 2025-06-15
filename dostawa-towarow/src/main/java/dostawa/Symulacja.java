@@ -242,6 +242,20 @@ public class Symulacja {
     }
 
 
+
+    // Ruch pojazdu do magazynu
+    private void obsluzDojazdDoMagazynu(Pojazd pojazd) {
+        pojazd.przesunNaKolejnyKrokTrasy();
+        if (pojazd.getTrasaDoCelu() == null || pojazd.getTrasaDoCelu().isEmpty()) {
+            if (Pozycja.czySasiednie(pojazd.getPozycja(), pojazd.getMagazynDocelowy().getPozycja())) {
+                pojazd.setStanPojazdu(Pojazd.STAN_LADOWANIE);
+                System.out.println("Pojazd ID " + pojazd.getId() +
+                        " dojechal obok magazynu ID " + pojazd.getMagazynDocelowy().getId());
+            }
+        }
+    }
+
+
     public void zapiszStatystyki() {
         // TODO: Zaimplementowac zapisywanie danych statystycznych do pliku csv
     }
