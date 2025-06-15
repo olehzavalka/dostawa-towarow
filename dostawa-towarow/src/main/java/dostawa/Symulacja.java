@@ -158,6 +158,53 @@ public class Symulacja {
     }
 
 
+    // Przypisanie wolnych zamowien do pojazdu
+    private boolean przypiszZamowienieDoPojazdu(Pojazd pojazd, List<Zamowienie> wolneZamowienia) {
+
+        Iterator<Zamowienie> iter = wolneZamowienia.iterator();
+        while (iter.hasNext()) {
+            Zamowienie zam = iter.next();
+
+            // Sprawdzenie, czy pojazd ma wystarczająca ladownosc
+            if (!pojazd.czyMoznaZaladowac(zam.getIlosc())) {
+                continue;
+            }
+
+            // Szukanie najblizszego magazynu do punktu dostawy
+            Magazyn magazyn = znajdzNajblizszyMagazyn(zam.getPunktDostawy().getPozycja(), zam.getIlosc());
+
+            // Sprawdzenie dostępnosci wolnego pola obok magazynu
+            Pozycja poleObokMagazynu = mapa.znajdzWolnePoleObok(magazyn.getPozycja(), pojazd.getPozycja(), pojazdy);
+
+            // Szukanie trasy do magazynu
+            List<Pozycja> zakazane = mapa.getZakazanePola();
+            zakazane.remove(pojazd.getPozycja());
+            List<Pozycja> trasaDoMagazynu = mapa.znajdzNajkrotszaTrase(pojazd.getPozycja(), poleObokMagazynu, zakazane);
+
+            // Aktualizacja stanu pojazdu i przypisanie do niego zamowienia
+            pojazd.setStanPojazdu(Pojazd.STAN_DOJEZDZA_DO_MAGAZYNU);
+            pojazd.setMagazynDocelowy(magazyn);
+            pojazd.setPunktDocelowy(zam.getPunktDostawy());
+            pojazd.setIloscDoDostarczenia(zam.getIlosc());
+            pojazd.setTrasaDoCelu(trasaDoMagazynu);
+
+            System.out.println("Pojazd ID " + pojazd.getId() +
+                    " (" + pojazd.getPozycja().getX() + ", " + pojazd.getPozycja().getY() + ")" +
+                    " dostal zlecenie od magazynu ID " + magazyn.getId() +
+                    " (" + magazyn.getPozycja().getX() + ", " + magazyn.getPozycja().getY() + ")" +
+                    " i ma dostarczyc " + zam.getIlosc() + " jednostek towaru do punktu " +
+                    zam.getPunktDostawy().getId() +
+                    " (" + zam.getPunktDostawy().getPozycja().getX() + ", " +
+                    zam.getPunktDostawy().getPozycja().getY() + ")");
+
+            // Usuwanie przypisanego zamowienia z listy wolnych
+            iter.remove();
+            return true;
+        }
+        return false;
+    }
+
+
 
     public void zapiszStatystyki() {
         // TODO: Zaimplementowac zapisywanie danych statystycznych do pliku csv
