@@ -412,13 +412,14 @@ public class Symulacja {
     }
 
 
-    public void zapiszStatystyki() {
-        // TODO: Zaimplementowac zapisywanie danych statystycznych do pliku csv
+    private void sprzedazDetalicznaWPunktachDostawy() {
+        for (PunktDostawy punkt : mapa.getPunktyDostawy()) {
+            punkt.sprzedajLosowoTowar(towar);
+        }
     }
 
-    public void generujZdarzeniaLosowe() {
-        // TODO: Zaimplementowac powstawanie losowych zdarzen drogowych
-    }
+
+    private StatystykiCSV statystykiCSV = new StatystykiCSV();
 
     // Metoda do uruchomienia symulacji
     public void uruchomSymulacje(int liczbaEpok) {
@@ -436,12 +437,12 @@ public class Symulacja {
 
             ruchPojazdow();
 
-            for (PunktDostawy punkt : mapa.getPunktyDostawy()) {
-                punkt.sprzedajLosowoTowar(towar);
-            }
+            sprzedazDetalicznaWPunktachDostawy();
 
             wyswietlMape();
+            statystykiCSV.zapisz(epoka, mapa.getMagazyny(), mapa.getPunktyDostawy(), pojazdy);
             System.out.println();
         }
+        Wykresy.generujWszystkieWykresy();
     }
 }
