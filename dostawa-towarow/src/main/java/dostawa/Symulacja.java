@@ -256,6 +256,26 @@ public class Symulacja {
     }
 
 
+    // Ladowanie pojazdu w magazynie
+    private void obsluzLadowanie(Pojazd pojazd) {
+        pojazd.getMagazynDocelowy().zaladujPojazd(pojazd, pojazd.getIloscDoDostarczenia());
+        Pozycja poleObokPunktu = mapa.znajdzWolnePoleObok(pojazd.getPunktDocelowy().getPozycja(), pojazd.getPozycja(), pojazdy);
+        if (poleObokPunktu == null) {
+            System.out.println("Brak wolnego miejsca przy punkcie dostawy dla pojazdu " + pojazd.getId());
+            return;
+        }
+        List<Pozycja> zakazane = mapa.getZakazanePola();
+        zakazane.remove(pojazd.getPozycja());
+        List<Pozycja> trasaDoPunktu = mapa.znajdzNajkrotszaTrase(pojazd.getPozycja(), poleObokPunktu, zakazane);
+        pojazd.setTrasaDoCelu(trasaDoPunktu);
+        pojazd.setStanPojazdu(Pojazd.STAN_DOJEZDZA_DO_PUNKTU);
+
+        System.out.println("Pojazd ID " + pojazd.getId() +
+                " zaladowany i jedzie obok punktu dostawy ID " + pojazd.getPunktDocelowy().getId());
+    }
+
+
+
     public void zapiszStatystyki() {
         // TODO: Zaimplementowac zapisywanie danych statystycznych do pliku csv
     }
