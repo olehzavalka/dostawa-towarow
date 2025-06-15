@@ -418,8 +418,27 @@ public class Symulacja {
         }
     }
 
+    public void wykonajEpoke() {
+        List<Zamowienie> zamowienia = generujZamowienia();
+
+        Set<String> noweIdZamowien = przygotujNoweIdZamowien(zamowienia);
+        wypiszZamowienia(zamowienia, noweIdZamowien);
+
+        zaktualizujListeZamowienWRealizacji(zamowienia);
+
+        przypiszZamowieniaPojazdom();
+
+        ruchPojazdow();
+
+        sprzedazDetalicznaWPunktachDostawy();
+    }
+
 
     private StatystykiCSV statystykiCSV = new StatystykiCSV();
+
+    public void zapiszStatystykiDoCSV(int epoka) {
+        statystykiCSV.zapisz(epoka, mapa.getMagazyny(), mapa.getPunktyDostawy(), pojazdy);
+    }
 
     // Metoda do uruchomienia symulacji
     public void uruchomSymulacje(int liczbaEpok) {
