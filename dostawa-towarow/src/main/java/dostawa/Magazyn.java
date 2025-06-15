@@ -11,7 +11,7 @@ public class Magazyn {
         this.pozycja = pozycja;
     }
 
-    // Do zrobienia
+
     public Pojazd znajdzNajlepszyPojazd(List<Pojazd> pojazdy, int iloscTowaru, Pozycja punktDostawy) {
         Pojazd najlepszy = null;
         int minZuzycie = Integer.MAX_VALUE;
@@ -27,19 +27,8 @@ public class Magazyn {
         return najlepszy;
     }
 
-    public void ladujPojazdIMarsz(Pojazd pojazd, Magazyn magazyn, Zamowienie zamowienie) {
-        // Zaladowanie towaru do pojazdu
-        int ilosc = zamowienie.getIlosc();
-
-        // Ustawienie nowej ilosci towaru w pojezdzie
+    public void zaladujPojazd(Pojazd pojazd, int ilosc) {
         pojazd.setAktualnaIloscTowaru(ilosc);
-
-        // Przeniesinie pojazdu na pozycje punktu dostawy
-        Pozycja cel = zamowienie.getPunktDostawy().getPozycja();
-        pojazd.setPozycja(cel);
-
-        // Dodanie towaru do punktu dostawy
-        zamowienie.getPunktDostawy().dodajTowar(ilosc);
     }
 
     public int getId() {
