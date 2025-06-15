@@ -115,6 +115,23 @@ public class Symulacja {
         }
     }
 
+    // Aktualizacja listy zamowien w realizacji
+    private void zaktualizujListeZamowienWRealizacji(List<Zamowienie> zamowienia) {
+        for (Zamowienie zam : zamowienia) {
+            boolean jestWRealizacji = false;
+            for (Zamowienie z : zamowieniaWRealizacji) {
+                if (z.getPunktDostawy().getId() == zam.getPunktDostawy().getId()
+                        && z.getIlosc() == zam.getIlosc()) {
+                    jestWRealizacji = true;
+                    break;
+                }
+            }
+            if (!jestWRealizacji) {
+                zamowieniaWRealizacji.add(zam);
+            }
+        }
+    }
+
 
 
     public void zapiszStatystyki() {
