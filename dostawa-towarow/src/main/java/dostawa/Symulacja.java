@@ -300,7 +300,7 @@ public class Symulacja {
                 pojazd.getPunktDocelowy().getId() +
                 " (" + pojazd.getPunktDocelowy().getPozycja().getX() + ", " +
                 pojazd.getPunktDocelowy().getPozycja().getY() + ")");
-        
+
         Iterator<Zamowienie> iterator = zamowieniaWRealizacji.iterator();
         while (iterator.hasNext()) {
             Zamowienie zam = iterator.next();
@@ -320,6 +320,20 @@ public class Symulacja {
     }
 
 
+    private void ruchPojazdow() {
+        for (Pojazd pojazd : pojazdy) {
+            int stan = pojazd.getStanPojazdu();
+            if (stan == Pojazd.STAN_DOJEZDZA_DO_MAGAZYNU) {
+                obsluzDojazdDoMagazynu(pojazd);
+            } else if (stan == Pojazd.STAN_LADOWANIE) {
+                obsluzLadowanie(pojazd);
+            } else if (stan == Pojazd.STAN_DOJEZDZA_DO_PUNKTU) {
+                obsluzDojazdDoPunktu(pojazd);
+            } else if (stan == Pojazd.STAN_ROZLADUNEK) {
+                obsluzRozladunek(pojazd);
+            }
+        }
+    }
 
 
     public void zapiszStatystyki() {
