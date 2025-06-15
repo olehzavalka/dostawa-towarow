@@ -51,7 +51,8 @@ public class Symulacja {
             if (punkt.getCzyMaAktywneZamowienie()) {
                 continue; // ten punkt czeka na dostawe – nie generuje nowego zamowienia
             }
-            // Generujemy kolejne zamowienie
+
+            // Generuje kolejne zamowienie
             // tylko jesli punkt nie jest pelny i nie ma aktywnego zamowienia
             Zamowienie zam = punkt.zlozZamowienie();
             if (zam != null) {
@@ -62,6 +63,7 @@ public class Symulacja {
         return zamowienia;
     }
 
+
     public Magazyn znajdzNajblizszyMagazyn(Pozycja punktDostawy, int iloscTowaru) {
         Magazyn najblizszy = null;
         int minDystans = Integer.MAX_VALUE;
@@ -71,11 +73,13 @@ public class Symulacja {
             int odlegloscPionowa = Math.abs(magazyn.getPozycja().getY() - punktDostawy.getY());
 
             int dystans = odlegloscPozioma + odlegloscPionowa;
+
             if (dystans < minDystans) {
                 minDystans = dystans;
                 najblizszy = magazyn;
             }
         }
+
         return najblizszy;
     }
 
@@ -87,15 +91,18 @@ public class Symulacja {
     // Tworzenie id zamowien na podstawie informacji o punkcie dostawy i ilosci towaru
     private Set<String> przygotujNoweIdZamowien(List<Zamowienie> zamowienia) {
         Set<String> idZamowien = new HashSet<>();
+
         for (Zamowienie z : zamowienia) {
             idZamowien.add(z.getPunktDostawy().getId() + "_" + z.getIlosc());
         }
+
         return idZamowien;
     }
 
 
 
     private void wypiszZamowienia(List<Zamowienie> zamowienia, Set<String> noweIdZamowien) {
+
         // Zamowienia w realizacji z poprzednich epok
         for (Zamowienie zam : zamowieniaWRealizacji) {
             String idZamowienia = zam.getPunktDostawy().getId() + "_" + zam.getIlosc();
@@ -106,6 +113,7 @@ public class Symulacja {
                         zam.getIlosc() + " jednostek towaru (w realizacji)");
             }
         }
+
         // Nowe zamowienia
         for (Zamowienie zam : zamowienia) {
             System.out.println("Punkt dostawy ID " + zam.getPunktDostawy().getId() +
@@ -115,10 +123,12 @@ public class Symulacja {
         }
     }
 
+
     // Aktualizacja listy zamowien w realizacji
     private void zaktualizujListeZamowienWRealizacji(List<Zamowienie> zamowienia) {
         for (Zamowienie zam : zamowienia) {
             boolean jestWRealizacji = false;
+
             for (Zamowienie z : zamowieniaWRealizacji) {
                 if (z.getPunktDostawy().getId() == zam.getPunktDostawy().getId()
                         && z.getIlosc() == zam.getIlosc()) {
@@ -126,10 +136,25 @@ public class Symulacja {
                     break;
                 }
             }
+
             if (!jestWRealizacji) {
                 zamowieniaWRealizacji.add(zam);
             }
         }
+    }
+
+
+    // Wyszukiwanie pojazdow nie bedacych w trakcie realizacji zamowienia
+    private List<Pojazd> wyszukajWolnePojazdy() {
+        List<Pojazd> wolnePojazdy = new ArrayList<>();
+
+        for (Pojazd pojazd : pojazdy) {
+            if (pojazd.getStanPojazdu() == Pojazd.STAN_WOLNY) {
+                wolnePojazdy.add(pojazd);
+            }
+        }
+
+        return wolnePojazdy;
     }
 
 
