@@ -5,17 +5,7 @@ public class PojazdSredni extends Pojazd {
     private static final int ZUZYCIE_PALIWA = 2;
 
     public PojazdSredni(int id, Pozycja pozycja) {
-        super(id, MAKSYMALNA_LADOWNOSC, pozycja);
-    }
-
-    @Override
-    public String getTyp() {
-        return "Sredni";
-    }
-
-    @Override
-    public char getSymbol() {
-        return 's';
+        super(id, MAKSYMALNA_LADOWNOSC, pozycja, "Sredni", 's');
     }
 
     public int getZuzyciePaliwa() {

@@ -1,13 +1,20 @@
 package dostawa;
 
 public class Towar {
-    private final String typ;
+    private final double cenaHurtowa;
+    private final double cenaDetaliczna;
 
-    public Towar(String nazwa) {
-        this.typ = nazwa;
+    public Towar(double cenaHurtowa, double cenaDetaliczna) {
+        this.cenaHurtowa = cenaHurtowa;
+        this.cenaDetaliczna = cenaDetaliczna;
     }
 
-    public String getNazwa() {
-        return typ;
+    // Gettery
+    public double getCenaHurtowa() {
+        return cenaHurtowa;
+    }
+
+    public double getCenaDetaliczna() {
+        return cenaDetaliczna;
     }
 }

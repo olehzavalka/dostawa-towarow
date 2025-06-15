@@ -7,6 +7,14 @@ public class Symulacja {
     private List<Pojazd> pojazdy;
     private List<Zdarzenie> zdarzenia;
 
+    private static final double CENA_PALIWA = 2.0;
+    private static final double CENA_KROKU_POJAZDU = 1.0;
+    private static final double CENA_KROKU_POJAZDU_DLA_MAGAZYNU = 1.2;
+    private static final double CENA_KROKU_POJAZDU_DLA_PUNKTU = 1.4;
+
+    private static final Towar towar = new Towar(6.0, 25.0);
+
+
     public Symulacja(Mapa mapa, List<Pojazd> pojazdy) {
         this.mapa = mapa;
         this.pojazdy = pojazdy;
@@ -200,10 +208,44 @@ public class Symulacja {
             // Sprawdzenie dostępnosci wolnego pola obok magazynu
             Pozycja poleObokMagazynu = mapa.znajdzWolnePoleObok(magazyn.getPozycja(), pojazd.getPozycja(), pojazdy);
 
-            // Szukanie trasy do magazynu
+            // Wyznaczenie trasy pojazdu do magazynu
             List<Pozycja> zakazane = mapa.getZakazanePola();
             zakazane.remove(pojazd.getPozycja());
             List<Pozycja> trasaDoMagazynu = mapa.znajdzNajkrotszaTrase(pojazd.getPozycja(), poleObokMagazynu, zakazane);
+            int liczbaKrokowDoMagazynu = trasaDoMagazynu.size();
+
+            // Wyznaczenie pola obok punktu dostawy
+            Pozycja poleObokPunktu = mapa.znajdzWolnePoleObok(zam.getPunktDostawy().getPozycja(), poleObokMagazynu, pojazdy);
+
+            // Wyznaczenie trasy z magazynu do punktu dostawy
+            List<Pozycja> zakazane2 = mapa.getZakazanePola();
+            zakazane2.remove(poleObokMagazynu);
+            List<Pozycja> trasaMagazynDoPunktu = mapa.znajdzNajkrotszaTrase(poleObokMagazynu, poleObokPunktu, zakazane2);
+            int liczbaKrokowMagazynDoPunktu = trasaMagazynDoPunktu.size();
+
+            // Suma krokow pojazdu
+            int sumaKrokowPojazdu = liczbaKrokowDoMagazynu + liczbaKrokowMagazynDoPunktu;
+
+
+
+            // Finanse
+
+            double kosztMagazynu = (liczbaKrokowDoMagazynu * (CENA_KROKU_POJAZDU_DLA_MAGAZYNU * CENA_PALIWA)) * pojazd.getZuzyciePaliwa();
+            magazyn.dodajKoszt(kosztMagazynu);
+            double zarobekMagazynu = zam.getIlosc() * towar.getCenaHurtowa();
+            magazyn.dodajZarobek(zarobekMagazynu);
+
+            // Koszt dla punktu dostawy (według wzoru – koszt za towar + droga z magazynu do punktu dostawy)
+            double kosztDlaPunktu = zam.getIlosc() * towar.getCenaHurtowa() +
+                    (liczbaKrokowMagazynDoPunktu * (CENA_KROKU_POJAZDU_DLA_PUNKTU * CENA_PALIWA)) * pojazd.getZuzyciePaliwa();
+            zam.getPunktDostawy().dodajKoszt(kosztDlaPunktu);
+
+            // Koszt pojazdu (paliwo na całej trasie: do magazynu + z magazynu do punktu)
+            double kosztDlaPojazdu = sumaKrokowPojazdu * CENA_KROKU_POJAZDU * CENA_PALIWA * pojazd.getZuzyciePaliwa();
+            pojazd.dodajKoszt(kosztDlaPojazdu);
+            // Zarobek pojazd
+            double zarobekPojazdu = obliczZarobekPojazdu(pojazd, liczbaKrokowDoMagazynu, liczbaKrokowMagazynDoPunktu);
+            pojazd.dodajZarobek(zarobekPojazdu);
 
             // Aktualizacja stanu pojazdu i przypisanie do niego zamowienia
             pojazd.setStanPojazdu(Pojazd.STAN_DOJEZDZA_DO_MAGAZYNU);
@@ -221,12 +263,43 @@ public class Symulacja {
                     " (" + zam.getPunktDostawy().getPozycja().getX() + ", " +
                     zam.getPunktDostawy().getPozycja().getY() + ")");
 
+
+            // Wyswietlanie informacji o finansach
+            System.out.println("- Finanse: Magazyn ID " + magazyn.getId() + " zarabia " + zarobekMagazynu +
+                    ", punkt dostawy ID " + zam.getPunktDostawy().getId() + " placi " + kosztDlaPunktu +
+                    ", dla pojazdu ID " + pojazd.getId() + " koszt paliwa wynosi " + kosztDlaPojazdu +
+                    " (kroki do magazynu: " + liczbaKrokowDoMagazynu + ", kroki z magazynu do punktu ID: "
+                    + liczbaKrokowMagazynDoPunktu + ")");
+
             // Usuwanie przypisanego zamowienia z listy wolnych
             iter.remove();
             return true;
         }
         return false;
     }
+
+
+    // Obliczanie zysku dla pojazdu
+    private double obliczZarobekPojazdu(Pojazd pojazd, int krokiDoMagazynu, int krokiDoPunktu) {
+        double zarobek = ((krokiDoMagazynu * CENA_KROKU_POJAZDU_DLA_MAGAZYNU * CENA_PALIWA)
+                + (krokiDoPunktu * CENA_KROKU_POJAZDU_DLA_PUNKTU * CENA_PALIWA)) * pojazd.getZuzyciePaliwa();
+        return zarobek;
+    }
+
+
+    private Map<String, Double[]> podsumujFinansePojazdow() {
+        Map<String, Double[]> map = new HashMap<>();
+        for (Pojazd pojazd : pojazdy) {
+            String typ = pojazd.getTyp();
+            Double[] dane = map.getOrDefault(typ, new Double[]{0.0, 0.0, 0.0});
+            dane[0] += pojazd.getSumaKosztow();
+            dane[1] += pojazd.getSumaZarobkow();
+            dane[2] += pojazd.getSaldo();
+            map.put(typ, dane);
+        }
+        return map;
+    }
+
 
 
     // Proba przypisania zamowienia wszystkim wolnym pojazdom, korzystajac z metody przypisujacej
@@ -260,10 +333,12 @@ public class Symulacja {
     private void obsluzLadowanie(Pojazd pojazd) {
         pojazd.getMagazynDocelowy().zaladujPojazd(pojazd, pojazd.getIloscDoDostarczenia());
         Pozycja poleObokPunktu = mapa.znajdzWolnePoleObok(pojazd.getPunktDocelowy().getPozycja(), pojazd.getPozycja(), pojazdy);
+
         if (poleObokPunktu == null) {
             System.out.println("Brak wolnego miejsca przy punkcie dostawy dla pojazdu " + pojazd.getId());
             return;
         }
+
         List<Pozycja> zakazane = mapa.getZakazanePola();
         zakazane.remove(pojazd.getPozycja());
         List<Pozycja> trasaDoPunktu = mapa.znajdzNajkrotszaTrase(pojazd.getPozycja(), poleObokPunktu, zakazane);
@@ -277,14 +352,15 @@ public class Symulacja {
 
     // Ruch pojazdu do punktu dostawy
     private void obsluzDojazdDoPunktu(Pojazd pojazd) {
+
         if (pojazd.getTrasaDoCelu() != null && !pojazd.getTrasaDoCelu().isEmpty()) {
             pojazd.setPozycja(pojazd.getTrasaDoCelu().remove(0));
         }
+
         if (pojazd.getTrasaDoCelu() == null || pojazd.getTrasaDoCelu().isEmpty()) {
             if (Pozycja.czySasiednie(pojazd.getPozycja(), pojazd.getPunktDocelowy().getPozycja())) {
                 pojazd.setStanPojazdu(Pojazd.STAN_ROZLADUNEK);
-                System.out.println("Pojazd ID " + pojazd.getId() +
-                        " dojechal obok punktu dostawy ID " + pojazd.getPunktDocelowy().getId());
+                System.out.println("Pojazd ID " + pojazd.getId() + " dojechal obok punktu dostawy ID " + pojazd.getPunktDocelowy().getId());
             }
         }
     }
@@ -347,7 +423,7 @@ public class Symulacja {
     // Metoda do uruchomienia symulacji
     public void uruchomSymulacje(int liczbaEpok) {
         for (int epoka = 1; epoka <= liczbaEpok; epoka++) {
-            System.out.println("=== Epoka " + epoka + " ===");
+            System.out.println("******* Epoka " + epoka + " *******");
 
             List<Zamowienie> zamowienia = generujZamowienia();
 
@@ -359,6 +435,10 @@ public class Symulacja {
             przypiszZamowieniaPojazdom();
 
             ruchPojazdow();
+
+            for (PunktDostawy punkt : mapa.getPunktyDostawy()) {
+                punkt.sprzedajLosowoTowar(towar);
+            }
 
             wyswietlMape();
             System.out.println();

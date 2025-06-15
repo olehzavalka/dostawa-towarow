@@ -27,7 +27,7 @@ public class Main {
         System.out.print("Podaj liczbe duzych pojazdow: ");
         int liczbaDuzych = scanner.nextInt();
 
-        System.out.print("Podaj liczbe epok symulacji: ");
+        System.out.print("\nPodaj liczbe epok symulacji: ");
         int liczbaEpok = scanner.nextInt();
 
         Symulacja symulacja = new Symulacja(szerokosc, dlugosc, liczbaMagazynow, liczbaPunktowDostawy,

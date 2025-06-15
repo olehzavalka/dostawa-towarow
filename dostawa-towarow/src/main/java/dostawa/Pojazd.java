@@ -2,17 +2,26 @@ package dostawa;
 
 import java.util.*;
 
-public abstract class Pojazd {
+public abstract class Pojazd implements Finanse {
     private int id;
     private int ladownoscMax;
     private int aktualnaIloscTowaru;
     private Pozycja pozycja;
+    private final String typ;
+    private final char symbol;
 
-    public Pojazd(int id, int ladownoscMax, Pozycja pozycja) {
+    // Finanse
+    private double sumaKosztow = 0.0;
+    private double sumaZarobkow = 0.0;
+    private double saldo = 0.0;
+
+    public Pojazd(int id, int ladownoscMax, Pozycja pozycja, String typ, char symbol) {
         this.id = id;
         this.ladownoscMax = ladownoscMax;
         this.pozycja = pozycja;
         this.aktualnaIloscTowaru = 0;
+        this.typ = typ;
+        this.symbol = symbol;
     }
 
     public static final int STAN_WOLNY = 0;
@@ -31,6 +40,18 @@ public abstract class Pojazd {
         if (trasaDoCelu != null && !trasaDoCelu.isEmpty()) {
             setPozycja(trasaDoCelu.remove(0));
         }
+    }
+
+
+    // Metody finansowe
+    public void dodajKoszt(double koszt) {
+        sumaKosztow += koszt;
+        saldo -= koszt;
+    }
+
+    public void dodajZarobek(double zarobek) {
+        sumaZarobkow += zarobek;
+        saldo += zarobek;
     }
 
     // Settery
@@ -101,15 +122,31 @@ public abstract class Pojazd {
         return trasaDoCelu;
     }
 
+    public double getSumaKosztow() {
+        return sumaKosztow;
+    }
+
+    public double getSumaZarobkow() {
+        return sumaZarobkow;
+    }
+
+    public double getSaldo() {
+        return saldo;
+    }
+
+    public String getTyp() {
+        return typ;
+    }
+
+    public char getSymbol() {
+        return symbol;
+    }
+
     // Metoda sprawdzajaca
 
     public boolean czyMoznaZaladowac(int ilosc) {
         return (aktualnaIloscTowaru + ilosc) <= ladownoscMax;
     }
-
-    public abstract String getTyp();
-
-    public abstract char getSymbol();
 
     public abstract int getZuzyciePaliwa();
 }

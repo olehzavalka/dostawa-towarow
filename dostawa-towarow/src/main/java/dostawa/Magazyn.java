@@ -2,9 +2,14 @@ package dostawa;
 
 import java.util.List;
 
-public class Magazyn {
+public class Magazyn implements Finanse {
     private int id;
     private Pozycja pozycja;
+
+    // Finanse
+    private double sumaKosztow = 0.0;
+    private double sumaZarobkow = 0.0;
+    private double saldo = 0.0;
 
     public Magazyn(int id, Pozycja pozycja) {
         this.id = id;
@@ -31,11 +36,36 @@ public class Magazyn {
         pojazd.setAktualnaIloscTowaru(ilosc);
     }
 
+    // Metody finansowe
+    public void dodajKoszt(double koszt) {
+        sumaKosztow += koszt;
+        saldo -= koszt;
+    }
+
+    public void dodajZarobek(double zarobek) {
+        sumaZarobkow += zarobek;
+        saldo += zarobek;
+    }
+
+    // Gettery
+
     public int getId() {
         return id;
     }
 
     public Pozycja getPozycja() {
         return pozycja;
+    }
+
+    public double getSumaZarobkow() {
+        return sumaZarobkow;
+    }
+
+    public double getSaldo() {
+        return saldo;
+    }
+
+    public double getSumaKosztow() {
+        return sumaKosztow;
     }
 }

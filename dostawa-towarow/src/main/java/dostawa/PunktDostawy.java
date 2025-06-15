@@ -2,11 +2,17 @@ package dostawa;
 
 import java.util.Random;
 
-public class PunktDostawy {
+public class PunktDostawy implements Finanse {
     private int id;
     private Pozycja pozycja;
     private int pojemnoscMax;
     private int aktualnaIloscTowaru;
+
+
+    // Finanse
+    private double sumaKosztow = 0.0;
+    private double sumaZarobkow = 0.0;
+    private double saldo = 0.0;
 
 
     public PunktDostawy(int id, Pozycja pozycja, int pojemnoscMax) {
@@ -47,6 +53,38 @@ public class PunktDostawy {
         pojazd.setAktualnaIloscTowaru(0);
     }
 
+    // Metody finansowe
+    public void dodajKoszt(double koszt) {
+        sumaKosztow += koszt;
+        saldo -= koszt;
+    }
+
+    public void dodajZarobek(double zarobek) {
+        sumaZarobkow += zarobek;
+        saldo += zarobek;
+    }
+
+    public void sprzedajTowary(Towar towar) {
+        if (aktualnaIloscTowaru > 0) {
+            double zarobek = aktualnaIloscTowaru * towar.getCenaDetaliczna();
+            dodajZarobek(zarobek);
+            this.aktualnaIloscTowaru = 0;
+        }
+    }
+
+
+    // Sprzedaz towaru
+    public void sprzedajLosowoTowar(Towar towar) {
+        if (aktualnaIloscTowaru > 0) {
+            Random random = new Random();
+            int ileSprzedac = Math.min(aktualnaIloscTowaru, random.nextInt(5) + 1); // 1-5, nie więcej niż masz na stanie
+            double zarobek = ileSprzedac * towar.getCenaDetaliczna();
+            dodajZarobek(zarobek);
+            aktualnaIloscTowaru -= ileSprzedac;
+            System.out.println("Punkt dostawy ID " + id + " sprzedał " + ileSprzedac + " szt. towaru detalicznie (zarobek: " + zarobek + ")");
+        }
+    }
+
     // Gettery
 
     public int getId() {
@@ -68,6 +106,21 @@ public class PunktDostawy {
     public boolean getCzyMaAktywneZamowienie() {
         return czyMaAktywneZamowienie;
     }
+
+    // Gettery finansowe
+
+    public double getSumaKosztow() {
+        return sumaKosztow;
+    }
+
+    public double getSumaZarobkow() {
+        return sumaZarobkow;
+    }
+
+    public double getSaldo() {
+        return saldo;
+    }
+
 
     // Settery
 

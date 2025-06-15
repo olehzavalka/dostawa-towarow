@@ -5,17 +5,7 @@ public class PojazdMaly extends Pojazd {
     private static final int ZUZYCIE_PALIWA = 1; // Możesz potem wykorzystać
 
     public PojazdMaly(int id, Pozycja pozycja) {
-        super(id, MAKSYMALNA_LADOWNOSC, pozycja);
-    }
-
-    @Override
-    public String getTyp() {
-        return "Maly";
-    }
-
-    @Override
-    public char getSymbol() {
-        return 'm';
+        super(id, MAKSYMALNA_LADOWNOSC, pozycja, "Maly", 'm');
     }
 
     public int getZuzyciePaliwa() {
