@@ -256,7 +256,7 @@ public class Symulacja {
     }
 
 
-    // Ladowanie pojazdu w magazynie
+    // Ladowanie pojazdu obok magazynu
     private void obsluzLadowanie(Pojazd pojazd) {
         pojazd.getMagazynDocelowy().zaladujPojazd(pojazd, pojazd.getIloscDoDostarczenia());
         Pozycja poleObokPunktu = mapa.znajdzWolnePoleObok(pojazd.getPunktDocelowy().getPozycja(), pojazd.getPozycja(), pojazdy);
@@ -288,6 +288,37 @@ public class Symulacja {
             }
         }
     }
+
+
+    // Rozladunek pojazdu obok punktu dostawy
+    private void obsluzRozladunek(Pojazd pojazd) {
+
+        pojazd.getPunktDocelowy().rozladujPojazd(pojazd);
+        System.out.println("Pojazd ID " + pojazd.getId() +
+                " dostarczyl " + pojazd.getIloscDoDostarczenia() +
+                " jednostek towaru do punktu " +
+                pojazd.getPunktDocelowy().getId() +
+                " (" + pojazd.getPunktDocelowy().getPozycja().getX() + ", " +
+                pojazd.getPunktDocelowy().getPozycja().getY() + ")");
+        
+        Iterator<Zamowienie> iterator = zamowieniaWRealizacji.iterator();
+        while (iterator.hasNext()) {
+            Zamowienie zam = iterator.next();
+
+            if (zam.getPunktDostawy().getId() == pojazd.getPunktDocelowy().getId()
+                    && zam.getIlosc() == pojazd.getIloscDoDostarczenia()) {
+                iterator.remove();
+                break;
+            }
+        }
+
+        pojazd.setStanPojazdu(Pojazd.STAN_WOLNY);
+        pojazd.setMagazynDocelowy(null);
+        pojazd.setPunktDocelowy(null);
+        pojazd.setIloscDoDostarczenia(0);
+        pojazd.setTrasaDoCelu(null);
+    }
+
 
 
 
