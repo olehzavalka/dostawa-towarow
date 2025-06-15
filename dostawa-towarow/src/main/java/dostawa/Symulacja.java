@@ -275,6 +275,21 @@ public class Symulacja {
     }
 
 
+    // Ruch pojazdu do punktu dostawy
+    private void obsluzDojazdDoPunktu(Pojazd pojazd) {
+        if (pojazd.getTrasaDoCelu() != null && !pojazd.getTrasaDoCelu().isEmpty()) {
+            pojazd.setPozycja(pojazd.getTrasaDoCelu().remove(0));
+        }
+        if (pojazd.getTrasaDoCelu() == null || pojazd.getTrasaDoCelu().isEmpty()) {
+            if (Pozycja.czySasiednie(pojazd.getPozycja(), pojazd.getPunktDocelowy().getPozycja())) {
+                pojazd.setStanPojazdu(Pojazd.STAN_ROZLADUNEK);
+                System.out.println("Pojazd ID " + pojazd.getId() +
+                        " dojechal obok punktu dostawy ID " + pojazd.getPunktDocelowy().getId());
+            }
+        }
+    }
+
+
 
     public void zapiszStatystyki() {
         // TODO: Zaimplementowac zapisywanie danych statystycznych do pliku csv
