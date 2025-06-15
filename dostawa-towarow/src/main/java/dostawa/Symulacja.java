@@ -1,7 +1,6 @@
 package dostawa;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Symulacja {
     private Mapa mapa;
@@ -78,6 +77,15 @@ public class Symulacja {
             }
         }
         return najblizszy;
+    }
+
+    // Tworzenie id zamowien na podstawie informacji o punkcie dostawy i ilosci towaru
+    private Set<String> przygotujNoweIdZamowien(List<Zamowienie> zamowienia) {
+        Set<String> idZamowien = new HashSet<>();
+        for (Zamowienie z : zamowienia) {
+            idZamowien.add(z.getPunktDostawy().getId() + "_" + z.getIlosc());
+        }
+        return idZamowien;
     }
 
 
