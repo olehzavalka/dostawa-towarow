@@ -40,6 +40,13 @@ public class PunktDostawy {
 
     private boolean czyMaAktywneZamowienie = false;
 
+
+    public void rozladujPojazd(Pojazd pojazd) {
+        this.dodajTowar(pojazd.getAktualnaIloscTowaru());
+        this.setCzyMaAktywneZamowienie(false);
+        pojazd.setAktualnaIloscTowaru(0);
+    }
+
     // Gettery
 
     public int getId() {
