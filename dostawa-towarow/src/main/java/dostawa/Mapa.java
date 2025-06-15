@@ -214,6 +214,44 @@ public class Mapa {
         return new ArrayList<>(); // Brak trasy
     }
 
+
+    // Szukanie pola obok magazynu/punktu dostawy w celu umozliwienia rozladunku
+    public Pozycja znajdzWolnePoleObok(Pozycja cel, Pozycja start, List<Pojazd> pojazdy) {
+        int[][] kierunki = { {1, 0}, {-1, 0}, {0, 1}, {0, -1} }; // prawo, lewo, dol, gora
+        Pozycja najlepszePole = null;
+        int najlepszyDystans = Integer.MAX_VALUE;
+
+        for (int[] k : kierunki) {
+            int nowyX = cel.getX() + k[0];
+            int nowyY = cel.getY() + k[1];
+            if (nowyX >= 0 && nowyX < szerokosc && nowyY >= 0 && nowyY < dlugosc) {
+                Pozycja kandydat = new Pozycja(nowyX, nowyY);
+                boolean zajete = false;
+                for (Magazyn m : magazyny) {
+                    if (m.getPozycja().equals(kandydat)) {
+                        zajete = true;
+                        break;
+                    }
+                }
+                if (zajete) continue;
+                for (PunktDostawy pd : punktyDostawy) {
+                    if (pd.getPozycja().equals(kandydat)) {
+                        zajete = true;
+                        break;
+                    }
+                }
+                if (zajete) continue;
+                int dystans = Math.abs(kandydat.getX() - start.getX()) + Math.abs(kandydat.getY() - start.getY());
+                if (dystans < najlepszyDystans) {
+                    najlepszyDystans = dystans;
+                    najlepszePole = kandydat;
+                }
+            }
+        }
+        return najlepszePole;
+    }
+
+
     // Gettery
 
     public int getSzerokosc() {
