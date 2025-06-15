@@ -49,7 +49,7 @@ public class Main {
                 Pojazd pojazd = magazyn.znajdzNajlepszyPojazd(symulacja.getPojazdy(), zam.getIlosc(), zam.getPunktDostawy().getPozycja());
                 if (pojazd != null) {
                     Pozycja pozycjaPojazduPrzed = pojazd.getPozycja();
-                    magazyn.ladujPojazdIMarsz(pojazd, magazyn, zam);
+                    //magazyn.ladujPojazdIMarsz(pojazd, magazyn, zam);
                     System.out.println("Pojazd ID " + pojazd.getId() +
                             " (" + pozycjaPojazduPrzed.getX() + ", " + pozycjaPojazduPrzed.getY() + ")" +
                             " dostal zlecenie od magazynu ID " + magazyn.getId() +

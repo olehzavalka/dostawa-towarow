@@ -80,6 +80,10 @@ public class Symulacja {
         return najblizszy;
     }
 
+
+    // Przechowywanie zamowien bedacych w realizacji
+    private List<Zamowienie> zamowieniaWRealizacji = new ArrayList<>();
+
     public void zapiszStatystyki() {
         // TODO: Zaimplementowac zapisywanie danych statystycznych do pliku csv
     }
