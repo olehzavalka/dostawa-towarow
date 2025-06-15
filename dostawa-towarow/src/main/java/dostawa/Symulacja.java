@@ -158,6 +158,30 @@ public class Symulacja {
     }
 
 
+    private boolean czyJestPojazdRealizujacyZamowienie(Zamowienie zam) {
+        for (Pojazd p : pojazdy) {
+            if (p.getStanPojazdu() != Pojazd.STAN_WOLNY &&
+                    p.getPunktDocelowy() != null &&
+                    p.getPunktDocelowy().getId() == zam.getPunktDostawy().getId() &&
+                    p.getIloscDoDostarczenia() == zam.getIlosc()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    private List<Zamowienie> wyszukajWolneZamowienia() {
+        List<Zamowienie> wolneZamowienia = new ArrayList<>();
+        for (Zamowienie zam : zamowieniaWRealizacji) {
+            if (!czyJestPojazdRealizujacyZamowienie(zam)) {
+                wolneZamowienia.add(zam);
+            }
+        }
+        return wolneZamowienia;
+    }
+
+
     // Przypisanie wolnych zamowien do pojazdu
     private boolean przypiszZamowienieDoPojazdu(Pojazd pojazd, List<Zamowienie> wolneZamowienia) {
 
@@ -204,6 +228,18 @@ public class Symulacja {
         return false;
     }
 
+
+    // Proba przypisania zamowienia wszystkim wolnym pojazdom, korzystajac z metody przypisujacej
+    // zamowienie do pojedynczego pojazdu
+    private void przypiszZamowieniaPojazdom() {
+        List<Zamowienie> wolneZamowienia = wyszukajWolneZamowienia();
+        List<Pojazd> wolnePojazdy = wyszukajWolnePojazdy();
+
+        for (Pojazd pojazd : wolnePojazdy) {
+            // Przypisywanie zamowien dla wolnych pojazdow
+            przypiszZamowienieDoPojazdu(pojazd, wolneZamowienia);
+        }
+    }
 
 
     public void zapiszStatystyki() {
