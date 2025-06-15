@@ -251,6 +251,18 @@ public class Mapa {
         return najlepszePole;
     }
 
+    // Rezerwacja pozycji zajetych przez magazyny i punkty dostawy
+    public List<Pozycja> getZakazanePola() {
+        List<Pozycja> zakazane = new ArrayList<>();
+        for (Magazyn m : magazyny) {
+            zakazane.add(m.getPozycja());
+        }
+        for (PunktDostawy pd : punktyDostawy) {
+            zakazane.add(pd.getPozycja());
+        }
+        return zakazane;
+    }
+
 
     // Gettery
 
