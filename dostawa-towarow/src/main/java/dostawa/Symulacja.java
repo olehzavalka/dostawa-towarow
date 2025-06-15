@@ -345,6 +345,23 @@ public class Symulacja {
     }
 
     // Metoda do uruchomienia symulacji
-    public void uruchomSymulacje() {
+    public void uruchomSymulacje(int liczbaEpok) {
+        for (int epoka = 1; epoka <= liczbaEpok; epoka++) {
+            System.out.println("=== Epoka " + epoka + " ===");
+
+            List<Zamowienie> zamowienia = generujZamowienia();
+
+            Set<String> noweIdZamowien = przygotujNoweIdZamowien(zamowienia);
+            wypiszZamowienia(zamowienia, noweIdZamowien);
+
+            zaktualizujListeZamowienWRealizacji(zamowienia);
+
+            przypiszZamowieniaPojazdom();
+
+            ruchPojazdow();
+
+            wyswietlMape();
+            System.out.println();
+        }
     }
 }
