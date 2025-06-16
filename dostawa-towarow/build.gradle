@@ -13,8 +13,16 @@ repositories {
 def javafxVersion = '24.0.1'
 
 dependencies {
+    // Zależności biblioteki JFreeChart i JCommon
     implementation 'org.jfree:jfreechart:1.5.4'
     implementation 'org.jfree:jcommon:1.0.24'
+
+    // Dodaj zależności JavaFX, by moduły javafx.controls i javafx.fxml były dostępne:
+    implementation "org.openjfx:javafx-controls:$javafxVersion"
+    implementation "org.openjfx:javafx-fxml:$javafxVersion"
+
+    // Dodaj JUnit Jupiter do testów:
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.3'
 }
 
 test {
@@ -22,11 +30,11 @@ test {
 }
 
 application {
-    mainClass = 'dostawa.WizualizacjaStatystyk' // <-- Twoja klasa z metodą main
+    // Wskaż pełną nazwę klasy głównej (z pakietem)
+    mainClass = 'dostawa.Main'
 }
 
 run {
-    // Dla JavaFX na Macu - to MUSI być!
     jvmArgs = [
             '--module-path', configurations.runtimeClasspath.asPath,
             '--add-modules', 'javafx.controls,javafx.fxml'
